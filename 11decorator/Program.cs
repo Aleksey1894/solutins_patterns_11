@@ -1,51 +1,61 @@
 ﻿using System;
 
 //Component
-public interface IFootballClub
+public interface FootballTeam
 {
     string GetName();
     string GetCity();
+
+    string GetCountry();
 }
 
 //ConcreteComponent
-public class ConcreteClub : IFootballClub
+public class ConcreteClub : FootballTeam
 {
     public string GetName()
     {
-        return "";
+        return "Name ";
     }
     public string GetCity()
     {
-        return "";
+        return "City ";
+    }
+    public string GetCountry()
+    {
+        return "Country ";
     }
 }
 
 //Decorator
-public class EnglandDecorator : IFootballClub
+public class LiverpoolTeam : FootballTeam
 {
-    protected readonly IFootballClub _fclub;
+    protected readonly FootballTeam _fclub;
 
-    public EnglandDecorator(IFootballClub fclub)
+    public LiverpoolTeam(FootballTeam fclub)
     {
         _fclub = fclub;
     }
 
     public string GetName()
     {
-        return _fclub.GetName() + " Arsenal";
+        return _fclub.GetName() + " Liverpool";
     }
 
     public string GetCity()
     {
-        return _fclub.GetCity() + " London";
+        return _fclub.GetCity() + " Liverpool";
+    }
+    public string GetCountry()
+    {
+        return _fclub.GetCountry() + " Englang";
     }
 }
 
-public class ItalyDecorator : IFootballClub
+public class JuventusTeam : FootballTeam
 {
-    protected readonly IFootballClub _fclub;
+    protected readonly FootballTeam _fclub;
 
-    public ItalyDecorator(IFootballClub fclub)
+    public JuventusTeam(FootballTeam fclub)
     {
         _fclub = fclub;
     }
@@ -59,22 +69,29 @@ public class ItalyDecorator : IFootballClub
     {
         return _fclub.GetCity() + " Turin";
     }
+    public string GetCountry()
+    {
+        return _fclub.GetCountry() + " Italy";
+    }
 }
 
 class Program
 {
     static void Main(string[] args)
     {
-        IFootballClub fclub = new ConcreteClub();
+        FootballTeam fclub = new ConcreteClub();
 
-        fclub = new EnglandDecorator(fclub);
-        Console.WriteLine("Football club: " + fclub.GetName());
-        Console.WriteLine("City of: " + fclub.GetCity());
+        fclub = new LiverpoolTeam(fclub);
+        Console.WriteLine(fclub.GetName());
+        Console.WriteLine(fclub.GetCity());
+        Console.WriteLine(fclub.GetCountry());
 
-        fclub = new ItalyDecorator(fclub);
-        Console.WriteLine("Football club: " + fclub.GetName());
-        Console.WriteLine("City of: " + fclub.GetCity());
+        fclub = new JuventusTeam(fclub);
+        Console.WriteLine(fclub.GetName());
+        Console.WriteLine(fclub.GetCity());
+        Console.WriteLine(fclub.GetCountry());
     }
 }
+
 
 

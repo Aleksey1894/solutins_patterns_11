@@ -1,68 +1,78 @@
 ﻿using System;
 
-public abstract class Team
+public abstract class FootballTeam
 {
     public abstract string GetName();
+    public abstract string Coach();
+
+    public List<string> Players;
+
+    public void TeamInfo()
+    {
+        Console.WriteLine("Name: " + GetName());
+        Console.WriteLine("Coach: " + Coach());
+        Console.WriteLine("Players:");
+        foreach (var player in Players)
+        {
+            Console.WriteLine("- " + player);
+        }
+    }
+
 }
 
-public class Team1 : Team
+public class LiverpoolTeam : FootballTeam
 {
-    public override string GetName()
+    public override string GetName() => "Liverpool";
+    public override string Coach() => "Klopp";
+
+    public LiverpoolTeam()
     {
-        return "Chelsea";
+        Players = new List<string> { "Allison", "va Dijk", "Robertson", "Alexander-Arnold", "Konate", "Alcantara",
+            "MacAllister", "Jones", "Elliot", "Salah", "Diaz" };
+    }
+
+}
+
+public class JuventusTeam : FootballTeam
+{
+    public override string GetName() => "Juventus";
+    public override string Coach() => "Allegri";
+
+    public JuventusTeam()
+    {
+        Players = new List<string> { "Szczesny", "De Sciglio", "Rugani", "Sandro", "Danilo", "Vea",
+            "Rabio", "Pogba", "Locatelli", "Chiesa", "Milik" };
     }
 }
 
-public class Team2 : Team
+public abstract class FootballTeamFactory
 {
-    public override string GetName()
-    {
-        return "Dynamo";
-    }
+    public abstract FootballTeam CreateTeam();
 }
 
-public abstract class TeamFactory
+public class LiverpoolFactory : FootballTeamFactory
 {
-    public abstract Team CreateTeam();
+    public override FootballTeam CreateTeam() => new LiverpoolTeam();
 }
-
-public class Team1Factory : TeamFactory
+public class JuventusFactory : FootballTeamFactory
 {
-    public override Team CreateTeam()
-    {
-        return new Team1();
-    }
-}
-
-public class Team2Factory : TeamFactory
-{
-    public override Team CreateTeam()
-    {
-        return new Team2();
-    }
+    public override FootballTeam CreateTeam() => new JuventusTeam();
 }
 
 class Program
 {
     static void Main(string[] args)
     {
-        TeamFactory team1Factory = new Team1Factory();
-        TeamFactory team2Factory = new Team2Factory();
+        FootballTeamFactory liverpoolFactory = new LiverpoolFactory();
+        FootballTeamFactory juventusFactory = new JuventusFactory();
 
-        Team team1 = team1Factory.CreateTeam();
-        Team team2 = team2Factory.CreateTeam();
+        FootballTeam LiverpoolTeam = liverpoolFactory.CreateTeam();
+        FootballTeam JuventusTeam = juventusFactory.CreateTeam();
 
-        if (IsTeam1Winner())
-        {
-            Console.WriteLine($"{team1.GetName()} win!");
-        }
-        else
-        {
-            Console.WriteLine($"{team2.GetName()} win!");
-        }
-    }
-    static bool IsTeam1Winner()
-    {
-        return new Random().Next(2) == 0;
+        Console.WriteLine("Information about F.C.Liverpool:");
+        LiverpoolTeam.TeamInfo();
+
+        Console.WriteLine("Information about F.C.Juventus:");
+        JuventusTeam.TeamInfo();
     }
 }
